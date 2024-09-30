@@ -118,6 +118,7 @@ class Shopee:
 
         if not self.d.xpath(XPATHS.LIVE_STREAM_TAB).wait(10):
             self.send_log('App not started')
+            self.lietke()
             return False
         
         self.click_exist(XPATHS.LIVE_STREAM_TAB)
@@ -147,11 +148,25 @@ class Shopee:
                 start_y = random.randint(300, 560)
                 self.d.swipe(166, 666, start_y, 666, duration=0.2)
                 self.captcha_count+=1
-                if self.captcha_count>=7000 :
+                if self.captcha_count>=40 :
+                    self.send_log('Đã cập nhật thêm dữ liệu captcha cho lần tiếp theo')
                     self.captcha_count=0
                     self.start_app()
                 else:
                     self.lietke()
+
+
+
+    def generate_random_id(self):
+        characters = list('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789')
+        random_id = ''.join(random.choice(characters) for _ in range(20))
+        return random_id
+
+    def update_data_captcha(self):
+        start_y = random.randint(300, 560)
+        with open("captcha.data", "a") as file:
+            id_cap=self.generate_random_id()
+            file.write(str(id_cap)+":"+str(start_y)+"\n")
 
     def checkchitieu(self):
         print('Kiểm tra chỉ tiêu '+str(self.total_coin_claimed)+'/'+str(self.chitieu))
