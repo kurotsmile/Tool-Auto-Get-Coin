@@ -160,7 +160,7 @@ class MyMainWindow(QMainWindow):
     def update_status_by_device(self, device, data):
         for row in range(self.table_widget.rowCount()):
             device_item = self.table_widget.item(row, 1)
-            total_coin, claim_count, stop_time, status = data
+            total_coin, claim_count, stop_time, status,Goal = data
             if device_item.text() == device:
                 if total_coin is not None:
                     self.table_widget.item(row, 2).setText(str(total_coin))
@@ -170,7 +170,7 @@ class MyMainWindow(QMainWindow):
                 else:
                     self.table_widget.setItem(row, 6, QTableWidgetItem(None))
                 self.table_widget.item(row, 4).setText(status)
-                self.table_widget.item(row,5).setText(self.gold_edit.text())
+                self.table_widget.item(row,5).setText(str(Goal))
                 break
 
     def send_data_to_table(self, device, data):
@@ -269,9 +269,9 @@ class MyMainWindow(QMainWindow):
             # Xóa worker và thread hiện tại
             del worker_info["worker"]
             del worker_info["thread"]
-            total_coin, claim_count, stop_time = data
+            total_coin, claim_count, stop_time ,Goal= data
             # Tạo worker mới
-            worker = Worker(self.update_table_signal, device, total_coin, claim_count, stop_time)
+            worker = Worker(self.update_table_signal, device, total_coin, claim_count, stop_time,Goal)
             thread = QThread()
             worker.moveToThread(thread)
 
